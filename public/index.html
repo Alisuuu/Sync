@@ -3,27 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WatchSync</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sync Video App</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-<div class="container">
-    <h1>WatchSync</h1>
-
-    <input type="text" id="videoLink" placeholder="Cole o link do vídeo" />
-    <button id="loadVideoBtn">Carregar Vídeo</button>
-
-    <div class="video-container">
-        <iframe id="videoPlayer" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div id="container">
+        <div id="video-player">
+            <video id="video" controls></video>
+            <div id="chat-container">
+                <textarea id="chat" placeholder="Digite uma mensagem..."></textarea>
+                <button id="sendMessage">Enviar</button>
+                <div id="messages"></div>
+            </div>
+        </div>
+        <button id="playButton">Play Video</button>
     </div>
-
-    <div class="chat">
-        <ul id="messages"></ul>
-        <input type="text" id="messageInput" placeholder="Digite sua mensagem" />
-    </div>
-</div>
-
-<script src="app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

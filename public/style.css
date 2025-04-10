@@ -1,44 +1,103 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #181818;
-  color: white;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #1b1b1b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
 .container {
-  max-width: 800px;
-  width: 100%;
-  margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    text-align: center;
 }
 
-input[type=text], button {
-  padding: 10px;
-  margin: 5px 0;
-  width: 100%;
-  font-size: 16px;
+h1 {
+    color: #593BA2;
+    font-size: 28px;
+    margin-bottom: 20px;
+    animation: pulse 1s infinite alternate, bob 1.5s infinite alternate;
+}
+
+input[type="text"], button {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #121212;
+    color: white;
+    outline: none;
+}
+
+button {
+    background-color: #593BA2;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #7a52c9;
 }
 
 .video-container {
-  margin-top: 10px;
-  text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #121212;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+    border-radius: 8px;
 }
 
 .chat {
-  margin-top: 20px;
+    margin-top: 20px;
+    background: #121212;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 #messages {
-  list-style: none;
-  padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  background: #333;
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 #messages li {
-  padding: 5px 10px;
-  border-bottom: 1px solid #444;
+    padding: 5px 10px;
+    border-bottom: 1px solid #444;
+    text-align: left;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+@keyframes bob {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
 }

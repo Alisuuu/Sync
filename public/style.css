@@ -1,0 +1,44 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #181818;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+input[type=text], button {
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  font-size: 16px;
+}
+
+.video-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.chat {
+  margin-top: 20px;
+}
+
+#messages {
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #333;
+}
+
+#messages li {
+  padding: 5px 10px;
+  border-bottom: 1px solid #444;
+}

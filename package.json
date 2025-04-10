@@ -1,12 +1,13 @@
 {
-  "name": "watchsync",
+  "name": "sync",
   "version": "1.0.0",
-  "main": "server/index.js",
+  "description": "Aplicação para sincronizar vídeos entre usuários com chat",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2"
+    "express": "^4.17.1",
+    "ws": "^8.4.0"
   }
 }

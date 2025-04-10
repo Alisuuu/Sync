@@ -1,40 +1,69 @@
-const socket = io();
-const chatInput = document.getElementById('chat-input');
-const messages = document.getElementById('messages');
-const videoFrame = document.getElementById('video-frame');
-const videoUrlInput = document.getElementById('video-url');
-const loadVideoBtn = document.getElementById('load-video');
+const videoLinkInput = document.getElementById('videoLink');
+const loadVideoBtn = document.getElementById('loadVideoBtn');
+const videoPlayer = document.getElementById('videoPlayer');
+const messageInput = document.getElementById('messageInput');
+const messagesList = document.getElementById('messages');
 
-loadVideoBtn.onclick = () => {
-  const url = videoUrlInput.value;
-  socket.emit('video change', url);
-  updateVideo(url);
+// Conectar ao WebSocket
+const socket = new WebSocket('ws://localhost:8080'); // Ajuste para o endereço do seu servidor
+
+socket.onopen = () => {
+    console.log('Conectado ao servidor WebSocket');
 };
 
-socket.on('video change', updateVideo);
+// Receber mensagens do servidor (comandos para controlar o vídeo)
+socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
 
-function updateVideo(url) {
-  if (url.includes('youtube.com') || url.includes('youtu.be')) {
-    const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
-    videoFrame.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
-  } else if (url.includes('twitch.tv')) {
-    const channel = url.split('/').pop();
-    videoFrame.src = `https://player.twitch.tv/?channel=${channel}&parent=${location.hostname}`;
-  } else {
-    videoFrame.src = url;
-  }
-}
+    if (data.type === 'loadVideo') {
+        videoPlayer.src = data.videoUrl;
+    } else if (data.type === 'syncPlayPause') {
+        if (data.play) {
+            videoPlayer.contentWindow.postMessage('{"event":"command","func":"playVideo"}', '*');
+        } else {
+            videoPlayer.contentWindow.postMessage('{"event":"command","func":"pauseVideo"}', '*');
+        }
+    } else if (data.type === 'chatMessage') {
+        const li = document.createElement('li');
+        li.textContent = data.message;
+        messagesList.appendChild(li);
+    }
+};
 
-chatInput.addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-    socket.emit('chat message', chatInput.value);
-    chatInput.value = '';
-  }
+// Enviar o link do vídeo para todos
+loadVideoBtn.addEventListener('click', () => {
+    const videoUrl = videoLinkInput.value;
+    socket.send(JSON.stringify({
+        type: 'loadVideo',
+        videoUrl: videoUrl
+    }));
 });
 
-socket.on('chat message', function(msg) {
-  const item = document.createElement('li');
-  item.textContent = msg;
-  messages.appendChild(item);
-  messages.scrollTop = messages.scrollHeight;
+// Enviar comando de play/pause
+function sendPlayPause(play) {
+    socket.send(JSON.stringify({
+        type: 'syncPlayPause',
+        play: play
+    }));
+}
+
+// Detecção de play/pause do vídeo
+videoPlayer.addEventListener('play', () => {
+    sendPlayPause(true);
+});
+
+videoPlayer.addEventListener('pause', () => {
+    sendPlayPause(false);
+});
+
+// Enviar mensagem de chat
+messageInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && messageInput.value.trim()) {
+        const message = messageInput.value.trim();
+        socket.send(JSON.stringify({
+            type: 'chatMessage',
+            message: message
+        }));
+        messageInput.value = '';
+    }
 });

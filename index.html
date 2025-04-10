@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WatchSync</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>WatchSync</h1>
+    <input type="text" id="video-url" placeholder="Cole o link do vídeo" />
+    <button id="load-video">Carregar vídeo</button>
+    <div class="video-container">
+      <iframe id="video-frame" width="640" height="360" allowfullscreen></iframe>
+    </div>
+    <div class="chat">
+      <ul id="messages"></ul>
+      <input id="chat-input" autocomplete="off" placeholder="Digite sua mensagem..." />
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

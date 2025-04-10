@@ -1,39 +1,21 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const path = require('path');
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+wss.on('connection', (ws) => {
+    console.log('Novo cliente conectado');
 
-app.use(express.static(path.join(__dirname, '../public')));
+    ws.on('message', (message) => {
+        const data = JSON.parse(message);
 
-io.on('connection', (socket) => {
-  console.log('Usuário conectado');
+        // Broadcast para todos os clientes
+        wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(data));
+            }
+        });
+    });
 
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
-
-  socket.on('video change', (url) => {
-    socket.broadcast.emit('video change', url);
-  });
-
-  socket.on('play', () => {
-    socket.broadcast.emit('play');
-  });
-
-  socket.on('pause', () => {
-    socket.broadcast.emit('pause');
-  });
-
-  socket.on('sync time', (time) => {
-    socket.broadcast.emit('sync time', time);
-  });
-});
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+    ws.on('close', () => {
+        console.log('Cliente desconectado');
+    });
 });
